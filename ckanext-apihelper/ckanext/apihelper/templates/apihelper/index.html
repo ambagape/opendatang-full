@@ -1,0 +1,74 @@
+{% extends 'page.html' %}
+{% set action = c.action %}
+
+{%- block subtitle %}API Helper{% endblock -%}
+
+{%- block styles %}
+{{ super() }}
+{% resource 'ckanext-apihelper/css/apihelper.css' %}
+{% endblock -%}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('API Helper'), controller='ckanext.apihelper.plugin:APIHelperController', action='get' %}</li>
+{% endblock %}
+
+
+{% block content_primary_nav %}
+{{ h.build_nav_icon('apihelper_get', _('Get')) }}
+{{ h.build_nav_icon('apihelper_create', _('Create')) }}
+{{ h.build_nav_icon('apihelper_update', _('Update')) }}
+{{ h.build_nav_icon('apihelper_delete', _('Delete')) }}
+{% endblock %}
+
+{% block primary_content_inner %}
+  <article class="module">
+    <div class="module-content">
+      {% block action_form %}
+      <form class="dataset-form form-horizontal" method="get">
+        <h1 class="page-heading">{{ action | upper }} API</h1>
+        {# Select action #}
+        {{ h.snippet('apihelper/snippets/form_action_list.html', action=action) }}
+
+        {# Documentation #}
+        <div id="apihelper-help">Select an endpoint to see it's documentation.</div>
+
+        {# Area to give form parameters #}
+        {% block apihelper_get_params %}
+        {% if action == 'get' %}
+        {{ h.snippet('apihelper/snippets/form_get_params.html') }}
+        {% else %}
+        {{ h.snippet('apihelper/snippets/form_post_params.html') }}
+        {% endif %}
+        {% endblock %}
+
+        {# Submit button #}
+        <button class="btn" name="save" data-module-action="{{ action }}" data-module="apihelper-submit" value="finish">Submit</button>
+
+        {# TODO: Area to show API ouput #}
+        <pre id="apihelper-output" class="invisible"></pre>
+      </form>
+      {% endblock %}
+    </div>
+  </article>
+{% resource 'ckanext-apihelper/scripts/apihelper.js' %}
+{% endblock %}
+
+{% block secondary %}
+  <section class="module module-narrow">
+    <div class="module context-info">
+      <div class="module-content">
+        <h1 class="heading">API Helper</h1>
+        <p>The API Helper shows the documentation for publically accessible API
+        endpoints and allows you make API calls in a friendly interface.</p>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+
+{%- block scripts %}
+<script>
+  var action_help = {{ h.dump_json(h.apihelper_action_list(action)) | safe }};
+</script>
+{{ super() }}
+{% endblock -%}
