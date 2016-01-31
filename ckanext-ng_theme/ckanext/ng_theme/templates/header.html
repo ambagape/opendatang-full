@@ -1,0 +1,132 @@
+{% block header_wrapper %}
+{% block header_account %}
+  <header class="account-masthead">
+    <div class="container">
+      {% block header_account_container_content %}
+        {% if c.userobj %}
+          <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
+            <ul class="unstyled">
+              {% block header_account_logged %}
+              {% if c.userobj.sysadmin %}
+                <li>
+                  <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
+                    <i class="icon-legal" aria-hidden="true"></i>
+                    <span class="text">{{ _('Admin') }}</span>
+                  </a>
+                </li>
+              {% endif %}
+              <li>
+                <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}" class="image" title="{{ _('View profile') }}">
+                  {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''), size=22) }}
+                  <span class="username">{{ c.userobj.display_name }}</span>
+                </a>
+              </li>
+              {% set new_activities = h.new_activities() %}
+              <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
+                {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
+                <a href="{{ h.url_for(controller='user', action='dashboard') }}" title="{{ notifications_tooltip }}">
+                  <i class="icon-dashboard" aria-hidden="true"></i>
+                  <span class="text">{{ _('Dashboard') }}</span>
+                  <span class="badge">{{ new_activities }}</span>
+                </a>
+              </li>
+              {% block header_account_settings_link %}
+                <li>
+                  <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}" title="{{ _('Edit settings') }}">
+                    <i class="icon-cog" aria-hidden="true"></i>
+                    <span class="text">{{ _('Settings') }}</span>
+                  </a>
+                </li>
+              {% endblock %}
+              {% block header_account_log_out_link %}
+                <li>
+                  <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
+                    <i class="icon-signout" aria-hidden="true"></i>
+                    <span class="text">{{ _('Log out') }}</span>
+                  </a>
+                </li>
+              {% endblock %}
+              {% endblock %}
+            </ul>
+          </div>
+        {% else %}
+          <nav class="account not-authed">
+            <ul class="unstyled">
+              {% block header_account_notlogged %}
+              <li>{% link_for _('Log in'), controller='user', action='login' %}</li>
+              {% if h.check_access('user_create') %}
+                <li>{% link_for _('Register'), controller='user', action='register', class_='sub' %}</li>
+              {% endif %}
+              {% endblock %}
+            </ul>
+          </nav>
+        {% endif %}
+      {% endblock %}
+    </div>
+  </header>
+{% endblock %}
+  <header class="jumbotron jumboHead">
+        <div class="container">
+
+            <div class="logo"><img src="/images/mict-logo.png" ></div>
+            <div class="heading"><span class="brand">DATA.GOV.NG</span><br><span style="font-size: medium"> FEDERAL MINISTRY OF COMMUNICATION TECHNOLOGY</span></h2></div>
+            <div class="search visible-lg visible-md">
+            	
+               <form method="GET" action="/dataset" class="navbar-form">
+                   <div class="input-group">
+                       <input type="text" name="q" class="form-control" placeholder="Search Data.gov.ng" aria-describedby="basic-addon1">
+                       <span class="input-group-btn">
+                           <button class="btn btn-default" type="submit">
+                               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                           </button>
+                      </span>
+                   </div>
+                
+              </form>
+            </div>          
+      </div>
+      </header>
+      <nav class=" navbar-default">
+          <div class="container">
+              
+              <div class="navbar-header">
+              	<form class="visible-sm visible-xs navbar-form navbar-left" role="search" method="GET" action="/dataset">
+              		<div class="input-group">
+      				 <input type="text"  name="q" class="form-control" placeholder="Search for...">
+                     <span class="input-group-btn">
+				        <button class="btn btn-default" type="submit">Go!</button>
+				      </span>
+				  	</div>
+				</form>
+                
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav nav-pills mynav visible-lg visible-md">
+                        <li role="presentation"><a href="/">HOME</a></li>
+                        <li role="presentation"><a href="/dataset">DATA</a></li>
+                        <li role="presentation"><a href="#">INNOVATION</a></li>
+                        <li role="presentation"><a href="/apihelper">DEVELOPERS</a></li>
+                        <li role="presentation"><a href="#">REQUEST A DATASET</a></li>
+                        <li role="presentation"><a href="#">CONTACT</a></li>
+                      </ul>
+                    
+                    <ul class="nav mynav visible-sm visible-xs">
+                        <li class="col-xs-12" role="presentation"><a href="#">HOME</a></li>
+                        <li class="col-xs-12" role="presentation"><a href="#">DATA</a></li>
+                        <li class="col-xs-12" role="presentation"><a href="#">INNOVATION</a></li>
+                        <li class="col-xs-12" role="presentation"><a href="#">DEVELOPERS</a></li>
+                        <li class="col-xs-12" role="presentation"><a href="#">REQUEST A DATASET</a></li>
+                        <li class="col-xs-12" role="presentation"><a href="#">CONTACT</a></li>
+                      </ul>
+                </div><!-- /.navbar-collapse -->
+           
+          </div>
+      </nav>
+{% endblock %}
