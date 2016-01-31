@@ -185,12 +185,11 @@ setup(
             ('templates/importer/**', 'ignore', None),
             ('templates/**.html', 'ckan', None),
             ('templates_legacy/**.html', 'ckan', None),
-<<<<<<< HEAD
+
             ('ckan/templates/home/language.js', 'genshi', {
                 'template_class': 'genshi.template:TextTemplate'
             }),
-=======
->>>>>>> e8c31ccfb750226ff1b1e26b5218be9b44d05e2d
+
             ('public/**', 'ignore', None),
         ],
         'ckanext': [

@@ -76,11 +76,13 @@ input {
   *overflow: visible;
   line-height: normal;
 }
+
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
+
 button,
 html input[type="button"],
 input[type="reset"],
